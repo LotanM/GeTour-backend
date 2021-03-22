@@ -1,12 +1,10 @@
 const dbService = require('../../services/db.service');
 const ObjectId = require('mongodb').ObjectId;
 const asyncLocalStorage = require('../../services/als.service');
-query();
 async function query() {
     try {
         const collection = await dbService.getCollection('order');
         const orders = await collection.find({}).toArray();
-        console.log('orders:', orders);
         return collection;
     } catch (err) {
         logger.error('cannot find orders', err);
