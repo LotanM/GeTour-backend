@@ -43,7 +43,7 @@ async function query(filterBy = {}) {
         //     delete tour.aboutUserId
         //     return tour
         // })
-
+        console.log(tours);
         return tours
     } catch (err) {
         logger.error('cannot find tours', err)

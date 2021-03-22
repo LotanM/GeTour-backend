@@ -1,5 +1,3 @@
 module.exports = {
-  'dbURL': 'mongodb://localhost:27017',
+  'dbURL': 'mongodb+srv://master:6f4S2FmzLFsJdjcm@cluster0.nxnde.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 }
-
-//add atlas
