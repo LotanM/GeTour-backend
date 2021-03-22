@@ -61,7 +61,6 @@ async function remove(tourId) {
         const query = { _id: ObjectId(tourId) }
         if (!isAdmin) query.byUserId = ObjectId(userId)
         await collection.deleteOne(query)
-        // return await collection.deleteOne({ _id: ObjectId(tourId), byUserId: ObjectId(userId) })
     } catch (err) {
         logger.error(`cannot remove tour ${tourId}`, err)
         throw err
@@ -71,14 +70,6 @@ async function remove(tourId) {
 
 async function add(tour) {
     try {
-        // peek only updatable fields!
-
-        // const tourToAdd = {
-        //     byUserId: ObjectId(tour.byUserId),
-        //     aboutUserId: ObjectId(tour.aboutUserId),
-        //     txt: tour.txt
-        // }
-
         const tourToAdd = {
             title: tour.title,
             capacity: tour.capacity,
@@ -88,7 +79,6 @@ async function add(tour) {
             difficulty: tour.difficulty,
             description: tour.description,
             tags: tour.tags,
-            imgUrl: tour.imgUrl,
             imgs: tour.imgs,
             locs: tour.locs,
         }
