@@ -25,13 +25,17 @@ async function deleteTour(req, res) {
 
 async function addTour(req, res) {
     try {
+        // var tour = req.body
+        // tour.byUserId = req.session.user._id
+        // tour = await tourService.add(tour)
+        // tour.byUser = req.session.user
+        // tour.aboutUser = await userService.getById(tour.aboutUserId)
+        // res.send(tour)
         var tour = req.body
-        tour.byUserId = req.session.user._id
+        let { fullname, _id, imgUrl } = req.session.user
+        tour.byUser = { fullname, _id, imgUrl }
         tour = await tourService.add(tour)
-        tour.byUser = req.session.user
-        tour.aboutUser = await userService.getById(tour.aboutUserId)
         res.send(tour)
-
     } catch (err) {
         logger.error('Failed to add tour', err)
         res.status(500).send({ err: 'Failed to add tour' })

@@ -72,10 +72,25 @@ async function remove(tourId) {
 async function add(tour) {
     try {
         // peek only updatable fields!
+
+        // const tourToAdd = {
+        //     byUserId: ObjectId(tour.byUserId),
+        //     aboutUserId: ObjectId(tour.aboutUserId),
+        //     txt: tour.txt
+        // }
+
         const tourToAdd = {
-            byUserId: ObjectId(tour.byUserId),
-            aboutUserId: ObjectId(tour.aboutUserId),
-            txt: tour.txt
+            title: tour.title,
+            capacity: tour.capacity,
+            countrt: tour.country,
+            price: tour.price,
+            daysCount: tour.daysCount,
+            difficulty: tour.difficulty,
+            description: tour.description,
+            tags: tour.tags,
+            imgUrl: tour.imgUrl,
+            imgs: tour.imgs,
+            locs: tour.locs,
         }
         const collection = await dbService.getCollection('tour')
         await collection.insertOne(tourToAdd)
