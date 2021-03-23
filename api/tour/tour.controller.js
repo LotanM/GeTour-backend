@@ -34,8 +34,12 @@ async function addTour(req, res) {
         // tour.aboutUser = await userService.getById(tour.aboutUserId)
         // res.send(tour)
         var tour = req.body
-        let { fullname, _id, imgUrl } = req.session.user
-        tour.byUser = { fullname, _id, imgUrl }
+
+        // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
+        // let { fullname, _id, imgUrl } = req.session.user
+        // tour.byUser = { fullname, _id, imgUrl }
+        // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
+
         tour = await tourService.add(tour)
         res.send(tour)
     } catch (err) {
