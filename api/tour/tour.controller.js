@@ -5,6 +5,8 @@ const tourService = require('./tour.service')
 async function getTours(req, res) {
     try {
         const tours = await tourService.query(req.query)
+        // const tours = await tourService.query()
+        console.log('tours:', tours)
         res.send(tours)
     } catch (err) {
         logger.error('Cannot get tours', err)
