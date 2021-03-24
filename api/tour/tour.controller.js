@@ -5,8 +5,11 @@ const tourService = require('./tour.service');
 async function getTours(req, res) {
     try {
         const tours = await tourService.query(req.query);
+<<<<<<< HEAD
         // const tours = await tourService.query()
         // console.log('tours:', tours);
+=======
+>>>>>>> 63af451488494035c777b430a766c10c78a3e096
         res.send(tours);
     } catch (err) {
         logger.error('Cannot get tours', err);
