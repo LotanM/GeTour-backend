@@ -16,9 +16,6 @@ async function login(username, password) {
     return user
 }
 
-
-//to do : add logout function
-
 async function signup(username, password, fullname) {
     const saltRounds = 10
 
