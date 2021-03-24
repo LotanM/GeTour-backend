@@ -68,6 +68,26 @@ async function remove(tourId) {
         throw err
     }
 }
+async function getById(tourId) {
+    try {
+        const collection = await dbService.getCollection('tour');
+        const tour = await collection.findOne({ _id: ObjectId(tourId) });
+        return tour;
+    } catch (err) {
+        logger.error(`while finding tour ${tourId}`, err);
+        throw err;
+    }
+}
+async function getByTourname(tourname) {
+    try {
+        const collection = await dbService.getCollection('tour');
+        const tour = await collection.findOne({ tourname });
+        return tour;
+    } catch (err) {
+        logger.error(`while finding tour ${tourname}`, err);
+        throw err;
+    }
+}
 
 
 async function add(tour) {
@@ -101,7 +121,9 @@ function _buildCriteria(filterBy) {
 module.exports = {
     query,
     remove,
-    add
+    add,
+    getByTourname,
+    getById
 }
 
 
