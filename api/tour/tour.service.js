@@ -6,10 +6,10 @@ async function query(filterBy = {}) {
     try {
         // const criteria = _buildCriteria(filterBy)
         const collection = await dbService.getCollection('tour')
-       
+
         const tours = await collection.find({}).toArray()
         console.log('tours:', tours)
-        
+
         // var tours = await collection.aggregate([
         //     {
         //         $match: filterBy
@@ -75,7 +75,7 @@ async function add(tour) {
         const tourToAdd = {
             title: tour.title,
             capacity: tour.capacity,
-            countrt: tour.country,
+            country: tour.country,
             price: tour.price,
             daysCount: tour.daysCount,
             difficulty: tour.difficulty,
