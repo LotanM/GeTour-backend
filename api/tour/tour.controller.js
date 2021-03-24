@@ -6,7 +6,7 @@ async function getTours(req, res) {
     try {
         const tours = await tourService.query(req.query);
         // const tours = await tourService.query()
-        console.log('tours:', tours);
+        // console.log('tours:', tours);
         res.send(tours);
     } catch (err) {
         logger.error('Cannot get tours', err);
@@ -42,10 +42,9 @@ async function addTour(req, res) {
         // tour.aboutUser = await userService.getById(tour.aboutUserId)
         // res.send(tour)
         var tour = req.body;
-
         // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
-        // let { fullname, _id, imgUrl } = req.session.user
-        // tour.byUser = { fullname, _id, imgUrl }
+        let { fullname, _id, imgUrl } = req.session.user
+        tour.byUser = { fullname, _id, imgUrl }
         // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
 
         tour = await tourService.add(tour);

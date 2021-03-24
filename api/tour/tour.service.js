@@ -8,7 +8,6 @@ async function query(filterBy = {}) {
         const collection = await dbService.getCollection('tour')
 
         const tours = await collection.find({}).toArray()
-        console.log('tours:', tours)
 
         // var tours = await collection.aggregate([
         //     {
@@ -92,21 +91,23 @@ async function getByTourname(tourname) {
 
 async function add(tour) {
     try {
-        const tourToAdd = {
-            title: tour.title,
-            capacity: tour.capacity,
-            country: tour.country,
-            price: tour.price,
-            daysCount: tour.daysCount,
-            difficulty: tour.difficulty,
-            description: tour.description,
-            tags: tour.tags,
-            imgs: tour.imgs,
-            locs: tour.locs,
-        }
+        // const tourToAdd = {
+        //     title: tour.title,
+        //     capacity: tour.capacity,
+        //     country: tour.country,
+        //     price: tour.price,
+        //     daysCount: tour.daysCount,
+        //     difficulty: tour.difficulty,
+        //     description: tour.description,
+        //     tags: tour.tags,
+        //     imgs: tour.imgs,
+        //     locs: tour.locs,
+        // }
         const collection = await dbService.getCollection('tour')
-        await collection.insertOne(tourToAdd)
-        return tourToAdd;
+        // await collection.insertOne(tourToAdd)
+        await collection.insertOne(tour)
+        // return tourToAdd;
+        return tour;
     } catch (err) {
         logger.error('cannot insert tour', err)
         throw err
