@@ -11,7 +11,6 @@ module.exports = {
     update,
     add
 }
-
 async function query(filterBy = {}) {
     const criteria = _buildCriteria(filterBy)
     try {
@@ -30,7 +29,6 @@ async function query(filterBy = {}) {
         throw err
     }
 }
-
 async function getById(userId) {
     try {
         const collection = await dbService.getCollection('user')
@@ -53,7 +51,6 @@ async function getByUsername(username) {
         throw err
     }
 }
-
 async function remove(userId) {
     try {
         const collection = await dbService.getCollection('user')
@@ -63,7 +60,6 @@ async function remove(userId) {
         throw err
     }
 }
-
 async function update(user) {
     try {
         // peek only updatable fields!
@@ -80,7 +76,6 @@ async function update(user) {
         throw err
     }
 }
-
 async function add(user) {
     try {
         // peek only updatable fields!
@@ -97,7 +92,6 @@ async function add(user) {
         throw err
     }
 }
-
 function _buildCriteria(filterBy) {
     const criteria = {}
     if (filterBy.txt) {
