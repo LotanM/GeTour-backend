@@ -23,6 +23,7 @@ async function getTour(req, res) {
 }
 async function deleteTour(req, res) {
     try {
+        console.log(req.params.id, 'PARAMS ID AT BACK');
         await tourService.remove(req.params.id);
         res.send({ msg: 'Deleted successfully' });
     } catch (err) {

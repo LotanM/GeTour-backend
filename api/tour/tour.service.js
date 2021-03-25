@@ -56,10 +56,10 @@ async function remove(tourId) {
     try {
         const store = asyncLocalStorage.getStore();
         const { userId, isAdmin } = store;
-        const collection = await dbService.getCollection('tour');
         // remove only if user is owner/admin
+        const collection = await dbService.getCollection('tour');
         const query = { _id: ObjectId(tourId) };
-        if (!isAdmin) query.byUserId = ObjectId(userId);
+        // if (!isAdmin) query.byUserId = ObjectId(userId);
         await collection.deleteOne(query);
     } catch (err) {
         logger.error(`cannot remove tour ${tourId}`, err);
