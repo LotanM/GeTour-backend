@@ -25,27 +25,13 @@ async function deleteOrder(req, res) {
 async function addOrder(req, res) {
     try {
         var order = req.body;
-        let {
-            fullname,
-            _id,
-            imgUrl,
-            createdAt,
-            guestesCount,
-            status,
-            totalPrice,
-            tour,
-        } = req.session.user;
-        order.byUser = {
-            fullname,
-            _id,
-            imgUrl,
-            createdAt,
-            guestesCount,
-            status,
-            totalPrice,
-            tour,
-        };
+        if (req.session.user) {
+            let { _id, fullname, imgUrl } = req.session.user
+            order.byUser = { _id, fullname, imgUrl }
+        }
+        console.log(order, 'Before Service');
         order = await orderService.add(order);
+        console.log(order, 'AFTER Service');
         res.send(order);
     } catch (err) {
         logger.error('Failed to add order', err);
