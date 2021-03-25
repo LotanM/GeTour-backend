@@ -27,7 +27,7 @@ async function addOrder(req, res) {
         var order = req.body;
         if (req.session.user) {
             let { _id, fullname, imgUrl } = req.session.user
-            order.byUser = { _id, fullname, imgUrl }
+            order.buyer = { _id, fullname, imgUrl }
         }
         console.log(order, 'Before Service');
         order = await orderService.add(order);
