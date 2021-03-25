@@ -1,13 +1,13 @@
-const dbService = require('../../services/db.service')
-const ObjectId = require('mongodb').ObjectId
-const asyncLocalStorage = require('../../services/als.service')
+const dbService = require('../../services/db.service');
+const ObjectId = require('mongodb').ObjectId;
+const asyncLocalStorage = require('../../services/als.service');
 
 async function query(filterBy = {}) {
     try {
         // const criteria = _buildCriteria(filterBy)
-        const collection = await dbService.getCollection('tour')
+        const collection = await dbService.getCollection('tour');
 
-        const tours = await collection.find({}).toArray()
+        const tours = await collection.find({}).toArray();
 
         // var tours = await collection.aggregate([
         //     {
@@ -45,26 +45,25 @@ async function query(filterBy = {}) {
         //     delete tour.aboutUserId
         //     return tour
         // })
-        return tours
+        return tours;
     } catch (err) {
-        logger.error('cannot find tours', err)
-        throw err
+        logger.error('cannot find tours', err);
+        throw err;
     }
-
 }
 
 async function remove(tourId) {
     try {
-        const store = asyncLocalStorage.getStore()
-        const { userId, isAdmin } = store
-        const collection = await dbService.getCollection('tour')
+        const store = asyncLocalStorage.getStore();
+        const { userId, isAdmin } = store;
+        const collection = await dbService.getCollection('tour');
         // remove only if user is owner/admin
-        const query = { _id: ObjectId(tourId) }
-        if (!isAdmin) query.byUserId = ObjectId(userId)
-        await collection.deleteOne(query)
+        const query = { _id: ObjectId(tourId) };
+        if (!isAdmin) query.byUserId = ObjectId(userId);
+        await collection.deleteOne(query);
     } catch (err) {
-        logger.error(`cannot remove tour ${tourId}`, err)
-        throw err
+        logger.error(`cannot remove tour ${tourId}`, err);
+        throw err;
     }
 }
 async function getById(tourId) {
@@ -88,6 +87,17 @@ async function getByTourname(tourname) {
     }
 }
 
+async function update(tour) {
+    try {
+        tour._id = ObjectId(tour._id);
+        console.log('tour:', tour);
+        const collection = await dbService.getCollection('tour');
+        await collection.updateOne({ _id: tour._id }, { $set: tour });
+        return tour;
+    } catch (err) {
+        console.log('err:', err);
+    }
+}
 
 async function add(tour) {
     try {
@@ -103,28 +113,27 @@ async function add(tour) {
         //     imgs: tour.imgs,
         //     locs: tour.locs,
         // }
-        const collection = await dbService.getCollection('tour')
+        const collection = await dbService.getCollection('tour');
         // await collection.insertOne(tourToAdd)
-        await collection.insertOne(tour)
+        await collection.insertOne(tour);
         // return tourToAdd;
         return tour;
     } catch (err) {
-        logger.error('cannot insert tour', err)
-        throw err
+        logger.error('cannot insert tour', err);
+        throw err;
     }
 }
 
 function _buildCriteria(filterBy) {
-    const criteria = {}
-    return criteria
+    const criteria = {};
+    return criteria;
 }
 
 module.exports = {
     query,
     remove,
+    update,
     add,
     getByTourname,
-    getById
-}
-
-
+    getById,
+};

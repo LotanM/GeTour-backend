@@ -1,7 +1,13 @@
 const express = require('express');
 const { requireAuth } = require('../../middlewares/requireAuth.middleware');
 const { log } = require('../../middlewares/logger.middleware');
-const { addTour, getTours, getTour, deleteTour } = require('./tour.controller');
+const {
+    addTour,
+    getTours,
+    getTour,
+    deleteTour,
+    updateTour,
+} = require('./tour.controller');
 const router = express.Router();
 
 // middleware that is specific to this router
@@ -12,6 +18,7 @@ router.get('/', getTours);
 // router.post('/',  requireAuth, addTour)
 router.get('/:id', getTour);
 router.post('/', addTour);
+router.put('/:id', updateTour);
 // router.delete('/:id',  requireAuth, deleteTour)
 router.delete('/:id', deleteTour);
 

@@ -31,10 +31,10 @@ async function remove(orderId) {
 async function add(order) {
     try {
         const orderToAdd = {
-            _id: order._id,
-            byUser: order.byUser,
+            buyer: order.buyer,
             createdAt: order.createdAt,
-            guestesCount: order.guestesCount,
+            guestsCount: order.guestsCount,
+            requests: order.requests,
             status: order.status,
             totalPrice: order.totalPrice,
             tour: order.tour,
