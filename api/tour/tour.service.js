@@ -90,7 +90,6 @@ async function getByTourname(tourname) {
 async function update(tour) {
     try {
         tour._id = ObjectId(tour._id);
-        console.log('tour:', tour);
         const collection = await dbService.getCollection('tour');
         await collection.updateOne({ _id: tour._id }, { $set: tour });
         return tour;

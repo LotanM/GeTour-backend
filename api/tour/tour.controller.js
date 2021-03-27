@@ -23,7 +23,6 @@ async function getTour(req, res) {
 }
 async function deleteTour(req, res) {
     try {
-        console.log(req.params.id, 'PARAMS ID AT BACK');
         await tourService.remove(req.params.id);
         res.send({ msg: 'Deleted successfully' });
     } catch (err) {
@@ -56,7 +55,6 @@ async function updateTour(req, res) {
     try {
         const tour = req.body;
         const savedTour = await tourService.update(tour);
-        console.log('savedTour:', savedTour)
         res.send(savedTour);
     } catch (err) {
         console.log('err:', err);

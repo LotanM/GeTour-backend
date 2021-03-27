@@ -21,6 +21,11 @@ async function deleteOrder(req, res) {
         res.status(500).send({ err: 'Failed to delete order' });
     }
 }
+async function updateOrder(req, res) {
+    orderService.update(req.body)
+
+    res.send('REPLACE ME')
+}
 
 async function addOrder(req, res) {
     try {
@@ -29,9 +34,7 @@ async function addOrder(req, res) {
             let { _id, fullname, imgUrl } = req.session.user
             order.buyer = { _id, fullname, imgUrl }
         }
-        console.log(order, 'Before Service');
         order = await orderService.add(order);
-        console.log(order, 'AFTER Service');
         res.send(order);
     } catch (err) {
         logger.error('Failed to add order', err);
@@ -43,4 +46,5 @@ module.exports = {
     getOrders,
     deleteOrder,
     addOrder,
+    updateOrder
 };

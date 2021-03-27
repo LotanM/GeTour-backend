@@ -12,7 +12,16 @@ async function query() {
         throw err;
     }
 }
-
+async function update(order) {
+    try {
+        order._id = ObjectId(order._id);
+        const collection = await dbService.getCollection('order');
+        await collection.updateOne({ _id: order._id }, { $set: order });
+        return order;
+    } catch (err) {
+        console.log('err:', err);
+    }
+}
 async function remove(orderId) {
     try {
         const store = asyncLocalStorage.getStore();
@@ -57,4 +66,5 @@ module.exports = {
     query,
     remove,
     add,
+    update
 };
