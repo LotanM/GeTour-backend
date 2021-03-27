@@ -6,8 +6,16 @@ const logger = require('./logger.service');
 var gIo = null
 var gSocketBySessionIdMap = {}
 
-function connectSockets(http, session) {
+
+
+function connectSockets(http, session,corsOrigin) {
     gIo = require('socket.io')(http);
+    // gIo = require('socket.io')(http, {
+    //     cors: {
+    //         origin: corsOrigin,
+    //         methods: ['GET', 'POST'],
+    //     },
+    // })
 
     const sharedSession = require('express-socket.io-session');
 
@@ -34,11 +42,24 @@ function connectSockets(http, session) {
             // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic
         })
+        socket.on('order topic', topic => {
+            if (socket.myTopic === topic) return;
+            if (socket.myTopic) {
+                socket.leave(socket.myTopic)
+            }
+            socket.join(topic)
+            // logger.debug('Session ID is', socket.handshake.sessionID)
+            socket.myTopic = topic
+        })
         socket.on('chat newMsg', msg => {
             // emits to all sockets:
             // gIo.emit('chat addMsg', msg)
             // emits only to sockets in the same room
             gIo.to(socket.myTopic).emit('chat addMsg', msg)
+        })
+        socket.on('orderSent', order => {
+            console.log(order,'Order at backend');
+            gIo.to(socket.myTopic).emit('addOrder', order)
         })
         socket.on('review-added', review => {
             // emits to all sockets:

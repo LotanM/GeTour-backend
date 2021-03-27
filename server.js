@@ -27,8 +27,8 @@ if (process.env.NODE_ENV === 'production') {
             'http://127.0.0.1:8081',
             'http://localhost:8080',
             'http://127.0.0.1:8080',
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
+            'http://localhost:3030',
+            'http://127.0.0.1:3030',
         ],
         credentials: true,
     };
@@ -52,6 +52,7 @@ app.use('/api/tour', tourRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/order', orderRoutes);
 connectSockets(http, session);
+// connectSockets(http, session,corsOptions.origin);
 
 // Make every server-side-route to match the index.html
 // so when requesting http://localhost:3030/index.html/car/123 it will still respond with
