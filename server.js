@@ -21,14 +21,14 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     const corsOptions = {
         origin: [
-            'http://localhost:8082',
-            'http://127.0.0.1:8082',
-            'http://localhost:8081',
-            'http://127.0.0.1:8081',
+            // 'http://localhost:8082',
+            // 'http://127.0.0.1:8082',
+            // 'http://localhost:8081',
+            // 'http://127.0.0.1:8081',
             'http://localhost:8080',
             'http://127.0.0.1:8080',
-            'http://localhost:3030',
-            'http://127.0.0.1:3030',
+            'http://localhost:3000',
+            'http://127.0.0.1:3000',
         ],
         credentials: true,
     };
@@ -46,6 +46,11 @@ const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware');
 app.all('*', setupAsyncLocalStorage);
 
 // TODO: check with app.use
+app.get('/api/setup-session', (req, res) => {
+    req.session.connectedAt = Date.now()
+    console.log('setup-sesiion:', req.sessionID);
+    res.end()
+})
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tour', tourRoutes);
