@@ -39,6 +39,7 @@ function connectSockets(http, session) {
             // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic;
         });
+<<<<<<< HEAD
         socket.on('chat newMsg', (msg) => {
             // emits to all sockets:
             // gIo.emit('chat addMsg', msg)
@@ -65,6 +66,11 @@ function connectSockets(http, session) {
             console.log(order.tour._guideId, 'Order at backend');
             console.log(socket.myTopic,'My Topic');
             gIo.to(socket.myTopic).emit('addOrder', order);
+=======
+        socket.on('orderSent', (order) => {
+            console.log(order, 'Order at backend');
+           (socket.myTopic).emit('addOrder', order);
+>>>>>>> 0e8e724980c381a2f1c92bb8f490e671c317cda4
         });
         socket.on('review-added', (review) => {
             // emits to all sockets:
