@@ -30,15 +30,9 @@ function connectSockets(http, session) {
             // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic;
         });
-        socket.on('chat newMsg', (msg) => {
-            // emits to all sockets:
-            // gIo.emit('chat addMsg', msg)
-            // emits only to sockets in the same room
-            gIo.to(socket.myTopic).emit('chat addMsg', msg);
-        });
         socket.on('orderSent', (order) => {
             console.log(order, 'Order at backend');
-            gIo.to(socket.myTopic).emit('addOrder', order);
+           (socket.myTopic).emit('addOrder', order);
         });
         socket.on('review-added', (review) => {
             // emits to all sockets:
