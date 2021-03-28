@@ -20,6 +20,15 @@ function connectSockets(http, session) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null;
             }
         })
+        socket.on('user msg', (topic) => {
+            if (socket.myTopic === topic) return;
+            if (socket.myTopic) {
+                socket.leave(socket.myTopic);
+            }
+            socket.join(topic);
+            // logger.debug('Session ID is', socket.handshake.sessionID)
+            socket.myTopic = topic;
+        });
         socket.on('order topic', (topic) => {
             console.log('topic:', topic);
             if (socket.myTopic === topic) return;
@@ -36,8 +45,25 @@ function connectSockets(http, session) {
             // emits only to sockets in the same room
             gIo.to(socket.myTopic).emit('chat addMsg', msg);
         });
+        socket.on('review topic', (topic) => {
+            if (socket.myTopic === topic) return;
+            if (socket.myTopic) {
+                socket.leave(socket.myTopic);
+            }
+            logger.debug('Session ID is', socket.handshake.sessionID)
+            socket.join(topic);
+            socket.myTopic = topic;
+        });
+        socket.on('review addReview',review=>{
+            console.log(review,'Review at backend');
+            socket.broadcast.emit('review-added', review);
+        })
+        socket.on('add msg',msg=>{
+            socket.broadcast.emit('show msg', msg);
+        })
         socket.on('orderSent', (order) => {
-            console.log(order, 'Order at backend');
+            console.log(order.tour._guideId, 'Order at backend');
+            console.log(socket.myTopic,'My Topic');
             gIo.to(socket.myTopic).emit('addOrder', order);
         });
         socket.on('review-added', (review) => {

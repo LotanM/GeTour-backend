@@ -30,10 +30,6 @@ async function updateOrder(req, res) {
 async function addOrder(req, res) {
     try {
         var order = req.body;
-        if (req.session.user) {
-            let { _id, fullname, imgUrl } = req.session.user
-            order.buyer = { _id, fullname, imgUrl }
-        }
         order = await orderService.add(order);
         res.send(order);
     } catch (err) {
