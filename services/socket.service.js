@@ -1,17 +1,19 @@
 const asyncLocalStorage = require('./als.service');
 const logger = require('./logger.service');
 
-var gIo = null
-var gSocketBySessionIdMap = {}
+var gIo = null;
+var gSocketBySessionIdMap = {};
 
 function connectSockets(http, session) {
     gIo = require('socket.io')(http);
     const sharedSession = require('express-socket.io-session');
-    gIo.use(sharedSession(session, {
-            autoSave: true
-        }));
-    gIo.on('connection', socket => {
-        console.log("someone joined!!!!!")
+    gIo.use(
+        sharedSession(session, {
+            autoSave: true,
+        })
+    );
+    gIo.on('connection', (socket) => {
+        console.log('someone joined!!!!!');
         // console.log('socket.handshake', socket.handshake)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket;
         socket.on('disconnect', (socket) => {
@@ -19,7 +21,7 @@ function connectSockets(http, session) {
             if (socket.handshake) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null;
             }
-        })
+        });
         socket.on('user msg', (topic) => {
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
@@ -50,29 +52,28 @@ function connectSockets(http, session) {
             if (socket.myTopic) {
                 socket.leave(socket.myTopic);
             }
-            logger.debug('Session ID is', socket.handshake.sessionID)
+            logger.debug('Session ID is', socket.handshake.sessionID);
             socket.join(topic);
             socket.myTopic = topic;
         });
-        socket.on('review addReview',review=>{
-            console.log(review,'Review at backend');
-            socket.broadcast.emit('review-added', review);
-        })
-        socket.on('add msg',msg=>{
+        socket.on('review addReview', (review) => {
+            console.log(review, 'Review at backend');
+            // socket.broadcast.emit('review-added', review);
+            gIo.to(socket.myTopic).emit('review-added', review);
+        });
+        socket.on('add msg', (msg) => {
             socket.broadcast.emit('show msg', msg);
-        })
+        });
         socket.on('orderSent', (order) => {
-            console.log(order.tour._guideId, 'Order at backend');
-            console.log(socket.myTopic,'My Topic');
             gIo.to(socket.myTopic).emit('addOrder', order);
         });
-        socket.on('review-added', (review) => {
-            // emits to all sockets:
-            // gIo.emit('chat addMsg', msg)
-            // emits only to sockets in the same room
-            socket.broadcast.emit('review-added', review);
-        });
-    })
+        // socket.on('review-added', (review) => {
+        //     // emits to all sockets:
+        //     // gIo.emit('chat addMsg', msg)
+        //     // emits only to sockets in the same room
+        //     socket.broadcast.emit('review-added', review);
+        // });
+    });
 }
 
 function emit({ type, data }) {
@@ -106,12 +107,12 @@ module.exports = {
     emit,
     broadcast,
 };
-     // socket.on('chat topic', topic => {
-        //     if (socket.myTopic === topic) return;
-        //     if (socket.myTopic) {
-        //         socket.leave(socket.myTopic)
-        //     }
-        //     socket.join(topic)
-        //     // logger.debug('Session ID is', socket.handshake.sessionID)
-        //     socket.myTopic = topic
-        // })
+// socket.on('chat topic', topic => {
+//     if (socket.myTopic === topic) return;
+//     if (socket.myTopic) {
+//         socket.leave(socket.myTopic)
+//     }
+//     socket.join(topic)
+//     // logger.debug('Session ID is', socket.handshake.sessionID)
+//     socket.myTopic = topic
+// })
