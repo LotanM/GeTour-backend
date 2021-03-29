@@ -32,7 +32,7 @@ function connectSockets(http, session) {
             socket.myTopic = topic;
         });
         socket.on('order topic', (topic) => {
-            console.log('topic:', topic);
+            console.log('order - topic:', topic);
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
                 socket.leave(socket.myTopic);
@@ -65,7 +65,10 @@ function connectSockets(http, session) {
             socket.broadcast.emit('show msg', msg);
         });
         socket.on('orderSent', (order) => {
-            gIo.to(socket.myTopic).emit('addOrder', order);
+            console.log(order, 'Order at backend');
+            console.log(socket, 'socket');
+            socket.broadcast.emit('addOrder', order);
+            // gIo.to(socket.myTopic).emit('addOrder', order);
         });
         // socket.on('review-added', (review) => {
         //     // emits to all sockets:
