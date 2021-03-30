@@ -28,6 +28,7 @@ function connectSockets(http, session) {
             socket.myTopic = topic;
         });
         socket.on('private msg', (topic) => {
+            console.log(topic, 'Topic PM');
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
                 socket.leave(socket.myTopic);
@@ -43,11 +44,6 @@ function connectSockets(http, session) {
             socket.join(topic);
             socket.myTopic = topic;
         });
-        socket.on('order confirmed', ({ order, msg }) => {
-            console.log('{buyer},msg:', order, msg);
-            // gIo.to(socket.myTopic).emit('',);
-        });
-
         socket.on('chat newMsg', (msg) => {
             gIo.to(socket.myTopic).emit('chat addMsg', msg);
         });
@@ -68,6 +64,8 @@ function connectSockets(http, session) {
         });
         socket.on('add private msg', (msg) => {
             console.log('msg:', msg)
+            console.log(socket.myTopic,'SOCKET TOPIC');
+            // gIo.to(msg.targetId).emit('show private msg', msg);
             socket.broadcast.emit('show private msg', msg);
         });
         socket.on('orderSent', (order) => {

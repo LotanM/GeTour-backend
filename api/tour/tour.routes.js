@@ -12,9 +12,11 @@ const router = express.Router();
 
 
 router.get('/', getTours);
-router.post('/', requireAuth, addTour)
+// router.post('/', requireAuth, addTour)
+router.post('/', addTour)
 router.get('/:id', getTour);
 router.put('/:id', updateTour);
-router.delete('/:id', requireAuth, deleteTour)
+// router.delete('/:id', requireAuth, deleteTour)
+router.delete('/:id', deleteTour)
 
 module.exports = router;
