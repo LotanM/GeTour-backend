@@ -27,6 +27,14 @@ function connectSockets(http, session) {
             socket.join(topic);
             socket.myTopic = topic;
         });
+        socket.on('private msg', (topic) => {
+            if (socket.myTopic === topic) return;
+            if (socket.myTopic) {
+                socket.leave(socket.myTopic);
+            }
+            socket.join(topic);
+            socket.myTopic = topic;
+        });
         socket.on('order topic', (topic) => {
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
@@ -35,6 +43,11 @@ function connectSockets(http, session) {
             socket.join(topic);
             socket.myTopic = topic;
         });
+        socket.on('order confirmed', ({ order, msg }) => {
+            console.log('{buyer},msg:', order, msg);
+            // gIo.to(socket.myTopic).emit('',);
+        });
+
         socket.on('chat newMsg', (msg) => {
             gIo.to(socket.myTopic).emit('chat addMsg', msg);
         });
@@ -53,6 +66,10 @@ function connectSockets(http, session) {
         socket.on('add msg', (msg) => {
             socket.broadcast.emit('show msg', msg);
         });
+        socket.on('add private msg', (msg) => {
+            console.log('msg:', msg)
+            socket.broadcast.emit('show private msg', msg);
+        });
         socket.on('orderSent', (order) => {
             socket.broadcast.emit('addOrder', order);
         });
@@ -63,7 +80,6 @@ function emit({ type, data }) {
     gIo.emit(type, data);
 }
 
-// TODO: Need to test emitToUser feature
 function emitToUser({ type, data, userId }) {
     gIo.to(userId).emit(type, data);
 }
@@ -90,12 +106,3 @@ module.exports = {
     emit,
     broadcast,
 };
-// socket.on('chat topic', topic => {
-//     if (socket.myTopic === topic) return;
-//     if (socket.myTopic) {
-//         socket.leave(socket.myTopic)
-//     }
-//     socket.join(topic)
-//     // logger.debug('Session ID is', socket.handshake.sessionID)
-//     socket.myTopic = topic
-// })
