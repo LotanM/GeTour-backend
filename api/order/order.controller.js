@@ -1,5 +1,4 @@
 const logger = require('../../services/logger.service');
-const userService = require('../user/user.service');
 const orderService = require('./order.service');
 
 async function getOrders(req, res) {
@@ -22,9 +21,8 @@ async function deleteOrder(req, res) {
     }
 }
 async function updateOrder(req, res) {
-    orderService.update(req.body)
-
-    res.send('REPLACE ME')
+    const order = orderService.update(req.body)
+    res.send(order)
 }
 
 async function addOrder(req, res) {

@@ -5,14 +5,11 @@ const { updateOrder, addOrder, getOrders, deleteOrder } = require('./order.contr
 const router = express.Router();
 
 // middleware that is specific to this router
-// router.use(requireAuth)
+router.use(requireAuth)
 
-// router.get('/', log, getOrders)
 router.get('/', getOrders);
-// router.post('/',  requireAuth, addOrder)
-router.post('/', addOrder);
-router.put('/', updateOrder);
-// router.delete('/:id',  requireAuth, deleteOrder)
-router.delete('/:id', deleteOrder);
+router.post('/', requireAuth, addOrder)
+router.put('/', requireAuth, updateOrder);
+router.delete('/:id', requireAuth, deleteOrder)
 
 module.exports = router;

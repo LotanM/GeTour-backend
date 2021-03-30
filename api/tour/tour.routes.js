@@ -10,16 +10,11 @@ const {
 } = require('./tour.controller');
 const router = express.Router();
 
-// middleware that is specific to this router
-// router.use(requireAuth)
 
-// router.get('/', log, getTours)
 router.get('/', getTours);
-// router.post('/',  requireAuth, addTour)
+router.post('/', requireAuth, addTour)
 router.get('/:id', getTour);
-router.post('/', addTour);
 router.put('/:id', updateTour);
-// router.delete('/:id',  requireAuth, deleteTour)
-router.delete('/:id', deleteTour);
+router.delete('/:id', requireAuth, deleteTour)
 
 module.exports = router;

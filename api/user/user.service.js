@@ -10,6 +10,7 @@ module.exports = {
     update,
     add,
 };
+
 async function query(filterBy = {}) {
     const criteria = _buildCriteria(filterBy);
     try {
@@ -18,8 +19,6 @@ async function query(filterBy = {}) {
         users = users.map((user) => {
             delete user.password;
             user.createdAt = ObjectId(user._id).getTimestamp();
-            // Returning fake fresh data
-            // user.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
             return user;
         });
         return users;
@@ -28,6 +27,7 @@ async function query(filterBy = {}) {
         throw err;
     }
 }
+
 async function getById(userId) {
     try {
         const collection = await dbService.getCollection('user');
@@ -40,6 +40,7 @@ async function getById(userId) {
         throw err;
     }
 }
+
 async function getByUsername(username) {
     try {
         const collection = await dbService.getCollection('user');
@@ -50,6 +51,7 @@ async function getByUsername(username) {
         throw err;
     }
 }
+
 async function remove(userId) {
     try {
         const collection = await dbService.getCollection('user');
@@ -59,9 +61,9 @@ async function remove(userId) {
         throw err;
     }
 }
+
 async function update(user) {
     try {
-        // peek only updatable fields!
         const userToSave = {
             _id: ObjectId(user._id),
             username: user.username,
@@ -78,9 +80,9 @@ async function update(user) {
         throw err;
     }
 }
+
 async function add(user) {
     try {
-        // peek only updatable fields!
         const userToAdd = {
             username: user.username,
             password: user.password,
