@@ -26,9 +26,7 @@ async function remove(orderId) {
     try {
         const store = asyncLocalStorage.getStore();
         const { orderId } = store;
-        const collection = await dbService.getCollection('order');
-
-        // remove only if user is owner/admin
+        const collection = await dbService.getCollection('order'); s
         const query = { _id: ObjectId(orderId) };
         await collection.deleteOne(query);
     } catch (err) {
@@ -55,11 +53,6 @@ async function add(order) {
         logger.error('cannot insert order', err);
         throw err;
     }
-}
-
-function _buildCriteria(filterBy) {
-    const criteria = {};
-    return criteria;
 }
 
 module.exports = {

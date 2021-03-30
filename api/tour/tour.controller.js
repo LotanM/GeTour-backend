@@ -32,18 +32,9 @@ async function deleteTour(req, res) {
 }
 async function addTour(req, res) {
     try {
-        // var tour = req.body
-        // tour.byUserId = req.session.user._id
-        // tour = await tourService.add(tour)
-        // tour.byUser = req.session.user
-        // tour.aboutUser = await userService.getById(tour.aboutUserId)
-        // res.send(tour)
         var tour = req.body;
-        // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
         let { fullname, _id, imgUrl } = req.session.user;
         tour.byUser = { fullname, _id, imgUrl };
-        // GET OUT OF COMMENT WHEN WE HAVE REQ.SESSION
-
         tour = await tourService.add(tour);
         res.send(tour);
     } catch (err) {
@@ -51,6 +42,7 @@ async function addTour(req, res) {
         res.status(500).send({ err: 'Failed to add tour' });
     }
 }
+
 async function updateTour(req, res) {
     try {
         const tour = req.body;
