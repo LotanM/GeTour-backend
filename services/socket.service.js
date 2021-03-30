@@ -13,11 +13,8 @@ function connectSockets(http, session) {
         })
     );
     gIo.on('connection', (socket) => {
-        console.log('someone joined!!!!!');
-        // console.log('socket.handshake', socket.handshake)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket;
         socket.on('disconnect', (socket) => {
-            console.log('Someone disconnected');
             if (socket.handshake) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null;
             }
@@ -28,23 +25,17 @@ function connectSockets(http, session) {
                 socket.leave(socket.myTopic);
             }
             socket.join(topic);
-            // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic;
         });
         socket.on('order topic', (topic) => {
-            console.log('order - topic:', topic);
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
                 socket.leave(socket.myTopic);
             }
             socket.join(topic);
-            // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic;
         });
         socket.on('chat newMsg', (msg) => {
-            // emits to all sockets:
-            // gIo.emit('chat addMsg', msg)
-            // emits only to sockets in the same room
             gIo.to(socket.myTopic).emit('chat addMsg', msg);
         });
         socket.on('review topic', (topic) => {
@@ -57,25 +48,14 @@ function connectSockets(http, session) {
             socket.myTopic = topic;
         });
         socket.on('review addReview', (review) => {
-            console.log(review, 'Review at backend');
-            // socket.broadcast.emit('review-added', review);
             gIo.to(socket.myTopic).emit('review-added', review);
         });
         socket.on('add msg', (msg) => {
             socket.broadcast.emit('show msg', msg);
         });
         socket.on('orderSent', (order) => {
-            console.log(order, 'Order at backend');
-            console.log(socket, 'socket');
             socket.broadcast.emit('addOrder', order);
-            // gIo.to(socket.myTopic).emit('addOrder', order);
         });
-        // socket.on('review-added', (review) => {
-        //     // emits to all sockets:
-        //     // gIo.emit('chat addMsg', msg)
-        //     // emits only to sockets in the same room
-        //     socket.broadcast.emit('review-added', review);
-        // });
     });
 }
 
