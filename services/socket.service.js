@@ -65,7 +65,6 @@ function connectSockets(http, session) {
         socket.on('add private msg', (msg) => {
             console.log('msg:', msg)
             console.log(socket.myTopic,'SOCKET TOPIC');
-            // gIo.to(msg.targetId).emit('show private msg', msg);
             socket.broadcast.emit('show private msg', msg);
         });
         socket.on('orderSent', (order) => {
