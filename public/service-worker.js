@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.da14f6c826a31c9f07c9e69531d68f2f.js"
+  "/precache-manifest.21faa39a29868a6777e20d2aff122ee6.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "Getour"});
