@@ -1,41 +1,33 @@
-const MongoClient = require('mongodb').MongoClient
+var mysql = require('mysql');
 
-const config = require('../config')
+var connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: '',
+    database: 'shop_db',
+    insecureAuth: true
+});
+
+connection.connect(err => {
+    if (err) throw new Error('mySql failed connection');
+    console.log('connected to SQL server');
+})
+
+
+function runSQL(query) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, function (error, results, fields) {
+            if (error) reject(error);
+            else resolve(results);
+            // // not entirely clear on whether connection.end() should be called here or not.
+            // // Leaning towards not.
+            // connection.end();
+        });
+    })
+}
 
 module.exports = {
-    getCollection
+    runSQL
 }
-
-// Database Name
-const dbName = 'GeTour'
-
-var dbConn = null
-
-async function getCollection(collectionName) {
-    try {
-        const db = await connect()
-        const collection = await db.collection(collectionName)
-        
-        return collection
-    } catch (err) {
-        logger.error('Failed to get Mongo collection', err)
-        throw err
-    }
-}
-
-async function connect() {
-    if (dbConn) return dbConn
-    try {
-        const client = await MongoClient.connect(config.dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
-        const db = client.db(dbName)
-        dbConn = db
-        return db
-    } catch (err) {
-        logger.error('Cannot Connect to DB', err)
-        throw err
-    }
-}
-
-
-
 
