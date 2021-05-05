@@ -35,8 +35,10 @@ if (process.env.NODE_ENV === 'production') {
     app.use(cors(corsOptions));
 }
 
-const productRoutes = require('./api/product/product.routes');
-
+const tourRoutes = require('./api/tour/tour.routes');
+const authRoutes = require('./api/auth/auth.routes');
+const userRoutes = require('./api/user/user.routes');
+const orderRoutes = require('./api/order/order.routes');
 const { connectSockets } = require('./services/socket.service');
 
 // routes
@@ -45,13 +47,15 @@ app.all('*', setupAsyncLocalStorage);
 
 // TODO: check with app.use
 app.get('/api/setup-session', (req, res) => {
-    req.session.connectedAt = Date.now();
+    req.session.connectedAt = Date.now()
     console.log('setup-sesiion:', req.sessionID);
-    res.end();
-});
+    res.end()
+})
 
-app.use('/api/product', productRoutes);
-
+app.use('/api/auth', authRoutes);
+app.use('/api/tour', tourRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/order', orderRoutes);
 connectSockets(http, session);
 // connectSockets(http, session,corsOptions.origin);
 
